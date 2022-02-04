@@ -1,7 +1,29 @@
-def main():
-    print('My first git program')
-    print('And I change it every day')
+import pygame, controls
+from gun import Gun
+from pygame.sprite import Group
+from stats import Stats
+from scores import Scores
 
 
-if __name__ == '__main__':
-    main()
+
+def run():
+    pygame.init()
+    screen = pygame.display.set_mode((1000, 950))
+    pygame.display.set_caption('Война на уровне звёзд')
+    bg_color = (0, 0, 0)
+    gun = Gun(screen)
+    bullets = Group()
+    inos = Group()
+    controls.create_army(screen, inos)
+    stats = Stats()
+    sc = Scores(screen, stats)
+
+    while True:
+        controls.events(screen, gun, bullets)
+        if stats.run_game:
+            gun.update_gun()
+            controls.update(bg_color, screen, stats, sc, gun, inos, bullets)
+            controls.update_bullets(screen, stats, sc, inos, bullets)
+            controls.update_inos(stats, screen, sc, gun, inos, bullets)
+
+run()
